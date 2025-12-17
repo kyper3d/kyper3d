@@ -9,7 +9,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 // Middleware
-app.use(cors())
+app.use(cors()) // Allow all origins for simplicity in production (or restrict to kyper3d.es later)
 app.use(express.json())
 
 // Database Connection Pool
@@ -198,6 +198,7 @@ app.post('/api/users/register', async (req, res) => {
 
 app.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body
+    console.log(`Login attempt for: ${email}`) // Debug log
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password])
         if (rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' })
